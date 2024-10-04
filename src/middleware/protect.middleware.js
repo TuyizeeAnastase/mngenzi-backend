@@ -1,0 +1,37 @@
+import { decoding } from "../util/token";
+import { getUserById } from "../services/user.services";
+
+export const protect=async(req,res,next)=>{
+    let token;
+    if(req.headers.authorization){
+        token=req.headers.authorization.split(" ")[1];
+    }
+    if(!token){
+        return res.status(401).json({
+            message:"Please login",
+        })
+    }
+    try{
+        const decoded=decoding(token);
+        const user=await getUserById(decoded.id);
+        req.user=user;
+        req.logged_user=user;
+        next();
+    }catch(error){
+        console.log(error)
+        return res.status(401).json({
+            message:'Please login to access'
+        })
+    }
+}
+
+export const restrictTo=(...roles)=>{
+    return (req,res,next)=>{
+        const role=req.user.role.title;
+        if(!roles.includes(role)){
+            return res.status(403).json({
+                message:"YOu are not authorized to perform this action",
+            })
+        }
+    }
+}

@@ -9,16 +9,14 @@ dotenv.config();
 
 const app=express()
 
-const PORT=process.env.PORT
+const PORT=process.env.PORT || 3000
 
 app.use(express.json());
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(routes)
-
 const server=app.listen(PORT,console.log(`Server listening on ${PORT}`))
-
 process.on("unhandledRejection",(err,promise)=>{
     server.close(()=>process.exit(1));
 });
