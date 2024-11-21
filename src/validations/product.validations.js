@@ -1,4 +1,4 @@
-import joi, { object } from 'joi'
+import joi from 'joi'
 
 
 export const productValidations=async(req,res,next)=>{
@@ -18,10 +18,7 @@ export const productValidations=async(req,res,next)=>{
         description:joi.string().required().messages({
             "any.required":"Descripption is required"
         }),
-        image_url:joi.string().required().messages({
-            "any.required":"Image is required"
-        }),
-        is_feature:joi.boolean().required().messages({
+        is_featured:joi.boolean().required().messages({
             "any.required":"Featured is required"
         }),
         is_available:joi.boolean().required().messages({

@@ -29,6 +29,14 @@ export const getProduct=async(id)=>{
   })
 }
 
+export const getProductByName=async(name)=>{
+    return await Product.findOne({
+        where :{
+            name:name
+        }
+    })
+}
+
 export const deleteProduct=async(id)=>{
     const product=await Product.destroy({
         where:{id:id}

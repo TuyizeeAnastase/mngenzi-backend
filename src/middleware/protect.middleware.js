@@ -30,8 +30,9 @@ export const restrictTo=(...roles)=>{
         const role=req.user.role.title;
         if(!roles.includes(role)){
             return res.status(403).json({
-                message:"YOu are not authorized to perform this action",
+                message:"Yuu are not authorized to perform this action",
             })
         }
+        next();
     }
 }

@@ -19,6 +19,16 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey:'category_id',
       as:'category',
       onDelete:'CASCADE'
+    });
+    Product.hasMany(models.Cart,{
+      foreignKey:'product_id',
+      as:'products',
+      onDelete:'CASCADE'
+    });
+    Product.hasMany(models.Item,{
+      foreignKey:'product_id',
+      as:'product',
+      onDelete:'CASCADE'
     })
   }
   return Product;

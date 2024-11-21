@@ -28,12 +28,11 @@ export const checkUserByEmail=async(req,res,next)=>{
             },
           ],
     })
-    console.log(user)
-    // if(!user){
-    //     return res.status(400).json({
-    //         message:'User does not exist'
-    //     })
-    // }
-    // req.user=user
-    // next();
+    if(!user){
+        return res.status(400).json({
+            message:'User does not exist'
+        })
+    }
+    req.user=user
+    next();
 }

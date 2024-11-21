@@ -17,8 +17,8 @@ export class productControllers{
 
     async createProduct(req,res){
         try{
-            const {name,category_id,price,discount,quantity,description,image_url,is_featured,rating,brand,is_available}=req.body
-            const newProduct=await addProduct({...req.body})
+            const image=req.results.secure_url
+            const newProduct=await addProduct({...req.body,image_url:image})
 
             return res.status(201).json({
                 message:'New product added successfully',
@@ -38,7 +38,7 @@ export class productControllers{
             const {name,category_id,price,discount,quantity,description,image_url,is_featured,rating,brand,is_available}=req.body
             await updateProduct(
                 {name,category_id,price,discount,quantity,description,image_url,is_featured,rating,brand,is_available},
-                product.id
+                product
         );
         return res.status(200).json({
             product:{id:product.id,...req.body}
@@ -49,6 +49,21 @@ export class productControllers{
                 error:error.message,
             })
         }
+    }
+
+    async getProduct(req,res){
+       try{
+        const product=req.product;
+        return res.status(200).json({
+            product
+        })
+       }
+       catch(error){
+        return res.status(500).json({
+            message:"Error while getting product",
+            error:error.message
+        })
+       }
     }
 
 }
