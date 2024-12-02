@@ -4,13 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec npx babel-node src/app.js",
+    "build": "babel src --out-dir dist --source-maps inline --copy-files",
+    "dev": "better-npm-run dev",
     "migrate": "npx sequelize db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "seeding": "npm run migrate:reset && npm run seed",
     "reset:db": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npm run seeding",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run seeding && npm run build && node --require @babel/polyfill ./dist/app.js"
+  },
+  "betterScripts": {
+    "dev": {
+      "command": "nodemon --exec npx babel-node src/app.js",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": 3500
+      }
+    },
+    "test": {
+      "command": "nyc --reporter=html --reporter=text mocha --require @babel/register ./tests/*.test.js --timeout 200000 --exit || true",
+      "env": {
+        "NODE_ENV": "test",
+        "PORT": 5500
+      }
+    },
+    "prod": {
+      "command": "node ./dist/app.js",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +45,7 @@
     "@babel/register": "^7.24.6",
     "babel-node": "^0.0.1-security",
     "bcryptjs": "^2.4.3",
+    "better-npm-run": "^0.1.1",
     "body-parser": "^1.20.2",
     "cloudinary": "^2.5.0",
     "cors": "^2.8.5",
